@@ -6,7 +6,7 @@ function Square (props) {
  
     
       return (
-        <button 
+        <button  
         className="square" 
         onClick={props.onClick}>
           {props.value}
