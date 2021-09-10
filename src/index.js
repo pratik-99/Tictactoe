@@ -24,6 +24,9 @@ function Square (props) {
     }
     handelClick(i){
       const squares=this.state.squares.slice();
+      if(calculateWinner(squares) || squares[i]){
+        return ;
+      }
       squares[i]=this.state.Next?'X':'O';
       this.setState({
         squares:squares,
@@ -36,7 +39,17 @@ function Square (props) {
     }
   
     render() {
-      const status = 'Next player: X';
+      const winner=calculateWinner(this.state.squares); 
+      let status ;
+      if (winner){
+        status = 'Winner is '+ winner;
+      }
+      else if(this.state.squares.some((v)=>{return v===null})){
+        status= (this.state.Next ? 'X' : 'O' ) + " It's your turn" 
+      }
+      else{
+        status='The Game is draw'
+      }
   
       return (
         <div>
@@ -76,7 +89,26 @@ function Square (props) {
       );
     }
   }
-  
+  function calculateWinner(squares)
+  {
+    const winSquare=[
+      [0,1,2],
+      [3,4,5],
+      [6,7,8],
+      [1,4,7],
+      [2,5,8],
+      [0,4,8],
+      [2,4,6],
+
+    ];
+    for(let i=0;i<winSquare.length;i++){
+      const [a,b,c]=winSquare[i];
+      if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
+        return squares[a];
+      }
+    }
+    return null;
+  }
   // ========================================
   
   ReactDOM.render(
